@@ -1,11 +1,29 @@
 import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+interface MenuItem {
+  label: string;
+  route: string;
+}
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterLinkActive
+  ],
   templateUrl: './header.html',
-  styleUrl: './header.css',
+  styleUrls: ['./header.css']
 })
-export class Header {
-
+export class HeaderComponent {
+  menuItems: MenuItem[] = [
+    { label: 'Inicio', route: '/inicio' },
+    { label: 'Menú', route: '/menu' },
+    { label: 'Reserva', route: '/reserva' },
+    { label: 'Sobre nosotros', route: '/sobre-nosotros' },
+    { label: 'Contacto', route: '/contacto' }
+  ];
 }

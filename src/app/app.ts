@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header';
 import { ScrollToTopComponent } from './components/scroll-to-top/scroll-to-top';
@@ -15,5 +15,5 @@ import { ScrollToTopComponent } from './components/scroll-to-top/scroll-to-top';
   styleUrls: ['./app.css']
 })
 export class AppComponent {
-  title = 'restaurante-app';
+  // Vacío está bien
 }

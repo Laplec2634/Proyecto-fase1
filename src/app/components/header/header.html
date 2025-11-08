@@ -1,1 +1,20 @@
-<p>header works!</p>
+<header>
+    <div class="header-content">
+        <div class="logo">
+            <div class="logo-circle">Logo</div>
+            <span class="brand-name">Nombre</span>
+        </div>
+        <nav>
+            <ul>
+                <li *ngFor="let item of menuItems">
+                    <a 
+                        [routerLink]="item.route" 
+                        routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        {{ item.label }}
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
