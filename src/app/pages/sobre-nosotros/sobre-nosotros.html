@@ -1,1 +1,28 @@
-<p>sobre-nosotros works!</p>
+<section class="about-section">
+    <h1>Sobre nosotros</h1>
+    <div class="about-container">
+        <div class="main-content">
+            <div class="image-box">
+                <img src="assets/images/Restaurante.png" alt="Nuestro restaurante">
+            </div>
+            <div class="text-box">
+                <p>
+                    En nuestro restaurante creemos en ofrecer experiencias gastronómicas únicas.
+                    Nuestro equipo combina pasión, sabor y tradición para brindarte platos preparados
+                    con ingredientes frescos y locales. ¡Ven a disfrutar con nosotros!
+                </p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="team-section">
+            <div class="team-card" *ngFor="let member of teamMembers">
+                <div class="team-image">
+                    <img [src]="member.imagen" [alt]="member.nombre">
+                </div>
+                <div class="team-name">{{ member.nombre }}</div>
+            </div>
+        </div>
+    </div>
+</section>

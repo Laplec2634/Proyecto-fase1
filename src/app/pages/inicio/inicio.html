@@ -1,1 +1,75 @@
-<p>inicio works!</p>
+<div id="top"></div>
+
+<!-- Hero Section -->
+<section class="hero" id="inicio">
+    <div class="hero-content">
+        <div class="hero-image">
+            <img src="assets/images/Restaurante.png" alt="Banner principal" class="hero-banner">
+        </div>
+    </div>
+</section>
+
+<!-- Tabs -->
+<div class="tabs">
+    <div class="nav-secundario">
+        <a href="#tendencias"><button class="tab-button" [class.active]="tabActiva === 'tendencias'" (click)="cambiarTab('tendencias')">Tendencias</button></a>
+        <a href="#nuevos-platos"><button class="tab-button" [class.active]="tabActiva === 'nuevos-platos'" (click)="cambiarTab('nuevos-platos')">Nuevos Platos</button></a>
+        <a href="#menu-dia"><button class="tab-button" [class.active]="tabActiva === 'menu-dia'" (click)="cambiarTab('menu-dia')">Menú del Día</button></a>
+    </div>
+</div>
+
+<!-- Main Content -->
+<main>
+    <!-- Tendencias Section -->
+    <section class="section" id="tendencias">
+        <div class="section-content">
+            <h2>Tendencias</h2>
+            <div class="items-grid">
+                <div class="item-card" *ngFor="let plato of tendencias">
+                    <div class="item-image">
+                        <img [src]="plato.imagen" [alt]="plato.nombre">
+                    </div>
+                    <p class="item-name">{{ plato.nombre }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nuevos Platos Section -->
+    <section class="section" id="nuevos-platos">
+        <div class="section-content">
+            <h2>Nuevos Platos</h2>
+            <div class="items-grid">
+                <div class="item-card" *ngFor="let plato of nuevosPlatos">
+                    <div class="item-image">
+                        <img [src]="plato.imagen" [alt]="plato.nombre">
+                    </div>
+                    <p class="item-name">{{ plato.nombre }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menú del Día Section -->
+    <section class="section" id="menu-dia">
+        <div class="section-content">
+            <h2>Menú del Día</h2>
+            <div class="items-grid">
+                <div class="item-card" *ngFor="let plato of menuDia">
+                    <div class="item-image">
+                        <img [src]="plato.imagen" [alt]="plato.nombre">
+                    </div>
+                    <p class="item-name">{{ plato.nombre }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer>
+    <p>Este es la carta que contiene los ítems de: Tendencias, Nuevos platos y Menú del día</p>
+</footer>
+
+<!-- Scroll to Top -->
+<a href="#top" class="scroll-to-top"></a>

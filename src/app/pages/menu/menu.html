@@ -1,1 +1,34 @@
-<p>menu works!</p>
+<div id="top"></div>
+
+<section class="menu-section">
+    <h1>Menú</h1>
+
+    <div class="menu-filters">
+        <button 
+            *ngFor="let categoria of categorias"
+            class="menu-filter-btn"
+            [class.active]="categoriaActiva === categoria.id"
+            (click)="filtrarPorCategoria(categoria.id)">
+            {{ categoria.nombre }}
+        </button>
+    </div>
+
+    <div class="menu-grid">
+        <div 
+            *ngFor="let plato of platosFiltrados"
+            class="menu-card"
+            (click)="toggleFlip($event)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img [src]="plato.imagen" [alt]="plato.nombre">
+                    <div class="card-title">{{ plato.nombre }}</div>
+                </div>
+                <div class="card-back">
+                    <h3>{{ plato.nombre }}</h3>
+                    <p>{{ plato.descripcion }}</p>
+                    <span class="price">${{ plato.precio | number:'1.0-0' }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

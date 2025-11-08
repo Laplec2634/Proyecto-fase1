@@ -15,5 +15,8 @@ import { ScrollToTopComponent } from './components/scroll-to-top/scroll-to-top';
   styleUrls: ['./app.css']
 })
 export class AppComponent {
-  // Vacío está bien
+  // Componente principal de la aplicación
 }
+
+// IMPORTANTE: Export nombrado también
+export { AppComponent as App };
