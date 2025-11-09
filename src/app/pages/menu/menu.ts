@@ -45,7 +45,7 @@ export class MenuComponent implements OnInit {
         descripcion: 'Plato típico colombiano con frijoles, arroz, carne molida, chicharrón, huevo, aguacate y arepa.',
         precio: 25000,
         categoria: 'almuerzo',
-        imagen: 'assets/images/bandeja-paisa.jpg'
+        imagen: 'assets/images/Plato1-Almuerzo-Bandeja-Paisa.jpg'
       },
       {
         id: 2,
@@ -181,7 +181,7 @@ export class MenuComponent implements OnInit {
         descripcion: 'Delicioso desayuno con arroz, frijoles, carne y huevo frito.',
         precio: 12000,
         categoria: 'almuerzo',
-        imagen: 'assets/images/Plato3-Almuerzo-arroz-pollo.jpg"'
+        imagen: 'assets/images/Plato3-Almuerzo-arroz-pollo.jpg'
       },
       {
         id: 19,

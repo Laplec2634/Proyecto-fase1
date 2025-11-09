@@ -1,6 +1,7 @@
-import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, PLATFORM_ID, Inject, AfterViewInit, Renderer2 } from '@angular/core';
+import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
+import { CommonModule, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 interface MenuItem {
   label: string;
@@ -25,7 +26,9 @@ declare global {
   templateUrl: './header.html',
   styleUrls: ['./header.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterViewInit {
+  
+  private translateLoaded = false;
   
   menuItems: MenuItem[] = [
     { label: 'Inicio', route: '/inicio' },
@@ -35,29 +38,125 @@ export class HeaderComponent implements OnInit {
     { label: 'Contacto', route: '/contacto' }
   ];
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(DOCUMENT) private document: Document,
+    private router: Router,
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit(): void {
-    // Solo ejecutar en el navegador (no en SSR)
     if (isPlatformBrowser(this.platformId)) {
-      this.loadGoogleTranslate();
+      // Limpiar el banner al iniciar
+      this.removeBannerFrame();
+      
+      // Escuchar cambios de ruta
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe(() => {
+        setTimeout(() => {
+          this.removeBannerFrame();
+          this.fixBodyPosition();
+        }, 100);
+      });
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.loadGoogleTranslate();
+        this.removeBannerFrame();
+        this.fixBodyPosition();
+      }, 500);
     }
   }
 
   loadGoogleTranslate(): void {
-    // Definir la función de inicialización
+    if (this.translateLoaded) {
+      return;
+    }
+
+    const existingScript = this.document.querySelector('script[src*="translate.google.com"]');
+    if (existingScript) {
+      this.translateLoaded = true;
+      this.removeBannerFrame();
+      return;
+    }
+
     window.googleTranslateElementInit = () => {
-      new window.google.translate.TranslateElement({
-        pageLanguage: 'es',
-        includedLanguages: 'en,fr,it,de,pt',
-        layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element');
+      try {
+        if (window.google && window.google.translate) {
+          new window.google.translate.TranslateElement(
+            {
+              pageLanguage: 'es',
+              includedLanguages: 'en,fr,it,de,pt',
+              layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+              autoDisplay: false,
+              multilanguagePage: true
+            },
+            'google_translate_element'
+          );
+          
+          // Remover el banner después de inicializar
+          setTimeout(() => {
+            this.removeBannerFrame();
+            this.fixBodyPosition();
+          }, 1000);
+        }
+      } catch (error) {
+        console.error('Error inicializando Google Translate:', error);
+      }
     };
 
-    // Cargar el script de Google Translate
-    const script = document.createElement('script');
+    const script = this.renderer.createElement('script');
     script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
     script.async = true;
-    document.head.appendChild(script);
+    script.defer = true;
+    
+    script.onload = () => {
+      this.translateLoaded = true;
+      setTimeout(() => this.removeBannerFrame(), 500);
+    };
+
+    this.renderer.appendChild(this.document.head, script);
+  }
+
+  private removeBannerFrame(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    // Remover el banner frame
+    const bannerFrames = this.document.querySelectorAll('.goog-te-banner-frame, .skiptranslate iframe');
+    bannerFrames.forEach(frame => {
+      if (frame && frame.parentNode) {
+        this.renderer.setStyle(frame, 'display', 'none');
+        this.renderer.setStyle(frame, 'visibility', 'hidden');
+        this.renderer.setStyle(frame, 'height', '0');
+      }
+    });
+
+    // Ocultar el banner container
+    const banner = this.document.querySelector('.goog-te-banner-frame');
+    if (banner) {
+      this.renderer.setStyle(banner, 'display', 'none');
+    }
+
+    this.fixBodyPosition();
+  }
+
+  private fixBodyPosition(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const body = this.document.body;
+    const html = this.document.documentElement;
+    
+    // Forzar posición correcta
+    this.renderer.setStyle(body, 'top', '0');
+    this.renderer.setStyle(body, 'position', 'static');
+    this.renderer.setStyle(html, 'margin-top', '0');
+    
+    // Remover clases de traducción que afectan el layout
+    this.renderer.removeClass(body, 'translated-ltr');
+    this.renderer.removeClass(body, 'translated-rtl');
   }
 }

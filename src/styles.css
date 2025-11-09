@@ -1,1 +1,70 @@
-/* You can add global styles to this file, and also import other style files */
+/* ===== SOLUCIÓN DEFINITIVA PARA GOOGLE TRANSLATE ===== */
+
+/* Ocultar completamente el banner */
+.goog-te-banner-frame {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Forzar que el body no se mueva */
+body {
+    top: 0px !important;
+    position: static !important;
+}
+
+/* Ocultar el banner superior */
+.skiptranslate iframe {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    border: none !important;
+}
+
+/* Cuando la página está traducida */
+body.translated-ltr,
+body.translated-rtl {
+    margin-top: 0 !important;
+    top: 0 !important;
+}
+
+/* Ocultar todos los iframes de Google Translate menos el selector */
+iframe.goog-te-banner-frame,
+iframe[src*="translate_suggestion"] {
+    display: none !important;
+    height: 0 !important;
+}
+
+/* Mantener visible solo el selector de idiomas */
+.goog-te-gadget {
+    color: transparent !important;
+}
+
+/* Ocultar el mensaje "Powered by" */
+.goog-te-gadget > span > a {
+    display: none !important;
+}
+
+.goog-te-gadget > div {
+    display: inline !important;
+}
+
+/* Quitar margen superior forzado */
+html {
+    margin-top: 0 !important;
+}
+
+/* Estilo del selector */
+.goog-te-combo {
+    margin: 4px 0 !important;
+    padding: 8px 12px !important;
+    border: 2px solid #f4a623 !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+    background-color: #fff !important;
+    cursor: pointer !important;
+    outline: none !important;
+}
+
+/* ===== FIN ESTILOS GOOGLE TRANSLATE ===== */

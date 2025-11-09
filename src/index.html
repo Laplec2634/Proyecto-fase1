@@ -1,11 +1,52 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>RestauranteApp</title>
+  <title>Restaurante Saviour Route</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  
+  <style>
+    /* Prevenir banner de Google Translate ANTES de que cargue */
+    body { 
+      top: 0 !important; 
+      position: static !important;
+    }
+    .goog-te-banner-frame { 
+      display: none !important; 
+      visibility: hidden !important;
+    }
+    .skiptranslate iframe {
+      display: none !important;
+      height: 0 !important;
+    }
+  </style>
+  
+  <script>
+    // Script para remover el banner apenas cargue
+    (function() {
+      var checkBanner = setInterval(function() {
+        var banner = document.querySelector('.goog-te-banner-frame');
+        var body = document.body;
+        
+        if (banner) {
+          banner.style.display = 'none';
+          banner.style.visibility = 'hidden';
+        }
+        
+        if (body) {
+          body.style.top = '0';
+          body.style.position = 'static';
+        }
+      }, 100);
+      
+      // Detener después de 10 segundos
+      setTimeout(function() {
+        clearInterval(checkBanner);
+      }, 10000);
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>
