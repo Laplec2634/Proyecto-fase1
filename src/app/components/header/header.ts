@@ -90,7 +90,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
           new window.google.translate.TranslateElement(
             {
               pageLanguage: 'es',
-              includedLanguages: 'en,fr,it,de,pt',
+              includedLanguages: 'es,en,fr,it,de,pt',
               layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
               autoDisplay: false,
               multilanguagePage: true
