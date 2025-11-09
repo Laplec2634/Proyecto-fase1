@@ -3,67 +3,82 @@
 <section class="contacto-section">
     <h1>Contacto</h1>
     <div class="contacto-container">
-        <!-- Info Cards -->
-            <div class="info-section">
-                <div class="info-card">
-                    <div class="icon-circle">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                        </svg>
-                    </div>
-                    <div class="info-content">
-                        <h3>Email</h3>
-                        <p>Example@np.com</p>
-                    </div>
-                </div>
-
-                <div class="info-card">
-                    <div class="icon-circle">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                        </svg>
-                    </div>
-                    <div class="info-content">
-                        <h3>Teléfono</h3>
-                        <p>312456789</p>
-                    </div>
-                </div>
-
-                <div class="info-card">
-                    <div class="icon-circle">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                        </svg>
-                    </div>
-                    <div class="info-content">
-                        <h3>Ubicación</h3>
-                        <p>Bogotá, Colombia</p>
-                    </div>
+        
+        <!-- Tarjetas de Información -->
+        <div class="info-section">
+            <div class="info-card" *ngFor="let info of infoCards">
+                <div class="icon-circle" [innerHTML]="getSvgIcon(info.icono)"></div>
+                <div class="info-content">
+                    <h3>{{ info.titulo }}</h3>
+                    <p>{{ info.descripcion }}</p>
                 </div>
             </div>
+        </div>
 
-            <!-- Form Section -->
-            <div class="form-section">
-                <form id="contactoForm" novalidate>
-                    <div class="form-group">
-                        <label for="nombre">Nombre completo</label>
-                        <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="correo">Correo</label>
-                        <input type="email" id="correo" name="correo" placeholder="tucorreo@ejemplo.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="asunto">Asunto</label>
-                        <input type="text" id="asunto" name="asunto" placeholder="¿En qué podemos ayudarte?" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="mensaje">Mensaje</label>
-                        <textarea id="mensaje" name="mensaje" placeholder="Escribe tu mensaje aquí..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn-enviar">Enviar Mensaje</button>
-                    <div id="mensajeRespuesta" class="mensaje"></div>
-                </form>
-            </div>
+        <!-- Formulario de Contacto -->
+        <div class="form-section">
+            <form [formGroup]="contactoForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="nombre">Nombre completo</label>
+                    <input 
+                        type="text" 
+                        id="nombre" 
+                        formControlName="nombre"
+                        placeholder="Ingresa tu nombre"
+                        [class.error-input]="nombreInvalido">
+                </div>
+
+                <div class="form-group">
+                    <label for="correo">Correo</label>
+                    <input 
+                        type="email" 
+                        id="correo" 
+                        formControlName="correo"
+                        placeholder="tucorreo@ejemplo.com"
+                        [class.error-input]="correoInvalido">
+                </div>
+
+                <div class="form-group">
+                    <label for="asunto">Asunto</label>
+                    <input 
+                        type="text" 
+                        id="asunto" 
+                        formControlName="asunto"
+                        placeholder="¿En qué podemos ayudarte?"
+                        [class.error-input]="asuntoInvalido">
+                </div>
+
+                <div class="form-group">
+                    <label for="mensaje">Mensaje</label>
+                    <textarea 
+                        id="mensaje" 
+                        formControlName="mensaje"
+                        placeholder="Escribe tu mensaje aquí..."
+                        [class.error-input]="mensajeInvalido"></textarea>
+                </div>
+
+                <button 
+                    type="submit" 
+                    class="btn-enviar"
+                    [disabled]="procesando">
+                    {{ procesando ? 'Enviando...' : 'Enviar Mensaje' }}
+                </button>
+
+                <!-- Mensajes de estado -->
+                <div 
+                    *ngIf="mensaje" 
+                    class="mensaje"
+                    [ngClass]="{
+                        'exito': mensaje.tipo === 'exito',
+                        'error': mensaje.tipo === 'error',
+                        'procesando': mensaje.tipo === 'procesando'
+                    }">
+                    {{ mensaje.texto }}
+                </div>
+            </form>
+        </div>
     </div>
 </section>
+
+<!-- Botón Scroll to Top -->
+<a href="#top" class="scroll-to-top"></a>
